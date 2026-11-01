@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+
+<body>
+  
+</body>
+
+</html><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b0b0f">
+<title>Frame Ripper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+</head>
+
+<body class="splash-active">
+
+<div id="splash" aria-label="Carregando">
+  <h1 id="splashTitle">frame ripper</h1>
+
+  <div class="splash-bar">
+    <div id="splashFill"></div>
+  </div>
+</div>
+
+<header>
+  <h1 class="fit" data-max="40">frame ripper</h1>
+  <p>Extraia imagens de vídeos diretamente no navegador</p>
+</header>
+
+<main class="container">
+
+  <section class="upload-box" id="dropZone">
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="1.6"
+        stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="5" width="18" height="14" rx="2.5"/>
+        <path d="M10 9.5v5l4.5-2.5z"/>
+      </svg>
+    </div>
+
+    <h3>Escolha um vídeo para começar</h3>
+    <div class="ou">ou arraste o arquivo para esta área</div>
+
+    <label class="btn-upload" for="videoInput">
+      Escolher vídeo
+    </label>
+
+    <input id="videoInput" type="file" accept="video/*" hidden>
+
+    <p class="support">
+      O processamento acontece no próprio navegador.
+      O vídeo não é enviado para nenhum servidor.
+    </p>
+  </section>
+
+  <section class="controls hidden" id="controls">
+
+    <div class="top-bar">
+      <div>
+        <strong>Vídeo carregado</strong>
+        <small id="videoInfo">Pronto para configurar</small>
+      </div>
+
+      <button id="removeVideoBtn">
+        Trocar vídeo
+      </button>
+    </div>
+
+    <video
+      id="videoPreview"
+      controls
+      muted
+      playsinline
+      preload="auto">
+    </video>
+
+    <div class="options">
+
+      <div class="opt">
+        <label for="mode">Como deseja extrair?</label>
+
+        <select id="mode">
+          <option value="interval">
+            Um frame a cada intervalo
+          </option>
+
+          <option value="total">
+            Definir quantidade total
+          </option>
+
+          <option value="all">
+            Todos os frames a 30 fps
+          </option>
+        </select>
+
+        <small class="help">
+          Use intervalo para escolher de quanto em quanto tempo
+          uma imagem deve ser capturada.
+        </small>
+      </div>
+
+      <div class="opt">
+        <label id="valueLabel" for="valueInput">
+          Intervalo entre frames em segundos
+        </label>
+
+        <input
+          id="valueInput"
+          type="number"
+          value="0.5"
+          min="0.01"
+          step="0.01"
+          inputmode="decimal">
+
+        <small class="help">
+          Exemplo: 0,5 captura uma imagem a cada meio segundo.
+        </small>
+      </div>
+
+      <div class="opt row2">
+
+        <div>
+          <label for="startInput">Início do trecho</label>
+
+          <input
+            id="startInput"
+            type="number"
+            placeholder="0"
+            min="0"
+            step="0.1"
+            inputmode="decimal">
+
+          <small class="help">Em segundos.</small>
+        </div>
+
+        <div>
+          <label for="endInput">Fim do trecho</label>
+
+          <input
+            id="endInput"
+            type="number"
+            placeholder="fim do vídeo"
+            min="0"
+            step="0.1"
+            inputmode="decimal">
+
+          <small class="help">
+            Vazio usa o fim do vídeo.
+          </small>
+        </div>
+
+      </div>
+
+      <div class="opt">
+        <label for="quality">Formato da imagem</label>
+
+        <select id="quality">
+          <option value="jpg-high">
+            JPG — qualidade alta e extração mais rápida
+          </option>
+
+          <option value="png">
+            PNG — qualidade máxima, porém mais pesado
+          </option>
+
+          <option value="jpg-medium">
+            JPG — arquivo menor
+          </option>
+        </select>
+
+        <small class="help">
+          A prévia usa qualidade reduzida para economizar memória;
+          o download mantém a resolução original.
+        </small>
+      </div>
+
+      <p id="estimate" class="estimate hidden"></p>
+
+      <button id="extractBtn" class="btn-extract">
+        Extrair frames
+      </button>
+
+      <button id="cancelBtn" class="btn-cancel hidden">
+        Parar extração
+      </button>
+
+    </div>
+  </section>
+
+  <section class="progress hidden" id="progressBox">
+
+    <div class="progress-line">
+      <p id="progressText">Aguardando início</p>
+      <strong id="progressCount">0 / 0</strong>
+    </div>
+
+    <div class="bar">
+      <div id="barFill"></div>
+    </div>
+
+    <p id="progressNote" class="note hidden">
+      A grade fica oculta durante a extração para reduzir
+      o uso do celular.
+    </p>
+  </section>
+
+  <section class="gallery hidden" id="gallery">
+
+    <div class="gallery-head">
+
+      <div>
+        <h2 id="frameCount">0 frames</h2>
+
+        <p class="gallery-description">
+          As prévias são leves para economizar memória.
+          Cada cartão baixa o arquivo original.
+        </p>
+      </div>
+
+      <div class="actions">
+        <button id="downloadAll" class="btn-ghost">
+          Baixar ZIP
+        </button>
+
+        <button id="clearBtn" class="btn-ghost">
+          Limpar
+        </button>
+      </div>
+
+    </div>
+
+    <p id="zipStatus" class="note hidden"></p>
+
+    <div id="frameGrid" class="grid"></div>
+  </section>
+
+</main>
+
+<script src="./script.js"></script>
+</body>
+</html>
